@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph,START,END
-from typing import TypeDict,Annotated
-from langchain_core.messages import BaseMessages
+from typing import TypedDict,Annotated
+from langchain_core.messages import BaseMessage
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.message import add_messages
@@ -12,17 +12,17 @@ llm = ChatOllama(model="qwen2.5:1.5b", temperature=0)
 
 ## State
 
-class ChatState(TypeDict):
-    messages:Annotated[list[BaseMessages],add_messages]
+class ChatState(TypedDict):
+    messages:Annotated[list[BaseMessage],add_messages]
 
 def chat_node(state:ChatState):
-    messages=state['message']
+    messages=state['messages']
     response=llm.invoke(messages)
     return{"messages":[response]}
 
 
 ## CheckPointer
-checkpointer=InMemorySaver
+checkpointer=InMemorySaver()
 
 graph=StateGraph(ChatState)
 graph.add_node("chat_node",chat_node)
