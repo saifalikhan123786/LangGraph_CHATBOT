@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Annotated
-from langchain_core.messages import BaseMessage,
+from langchain_core.messages import BaseMessage
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.message import add_messages
@@ -31,3 +31,4 @@ chatbot = graph.compile(checkpointer=checkpointer)
 
 # 🟢 Testing ke liye CONFIG yahan define karna zaroori hai
 CONFIG = {'configurable': {'thread_id': 'thread-1'}}
+
