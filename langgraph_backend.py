@@ -1,6 +1,6 @@
-from langgraph.graph import StateGraph,START,END
-from typing import TypedDict,Annotated
-from langchain_core.messages import BaseMessage
+from langgraph.graph import StateGraph, START, END
+from typing import TypedDict, Annotated
+from langchain_core.messages import BaseMessage,
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.message import add_messages
@@ -11,22 +11,23 @@ load_dotenv()
 llm = ChatOllama(model="qwen2.5:1.5b", temperature=0)
 
 ## State
-
 class ChatState(TypedDict):
-    messages:Annotated[list[BaseMessage],add_messages]
+    messages: Annotated[list[BaseMessage], add_messages]
 
-def chat_node(state:ChatState):
-    messages=state['messages']
-    response=llm.invoke(messages)
-    return{"messages":[response]}
-
+def chat_node(state: ChatState):
+    messages = state['messages']
+    response = llm.invoke(messages)
+    return {"messages": [response]}
 
 ## CheckPointer
-checkpointer=InMemorySaver()
+checkpointer = InMemorySaver()
 
-graph=StateGraph(ChatState)
-graph.add_node("chat_node",chat_node)
-graph.add_edge(START,"chat_node")
-graph.add_edge("chat_node",END)
+graph = StateGraph(ChatState)
+graph.add_node("chat_node", chat_node)
+graph.add_edge(START, "chat_node")
+graph.add_edge("chat_node", END)
 
-chatbot=graph.compile(checkpointer=checkpointer)
+chatbot = graph.compile(checkpointer=checkpointer)
+
+# 🟢 Testing ke liye CONFIG yahan define karna zaroori hai
+CONFIG = {'configurable': {'thread_id': 'thread-1'}}
