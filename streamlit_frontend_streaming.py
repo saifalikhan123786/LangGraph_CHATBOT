@@ -26,7 +26,7 @@ if user_input:
 
         ai_message=st.write_stream(
             message_chunk.content for message_chunk,metadata in chatbot.stream(
-                {'messages': [HumanMessage(content='What is the recipe to make pasta')]},
+                {'messages': [HumanMessage(content=user_input)]},
                     config=CONFIG,
                     stream_mode='messages'
             )
