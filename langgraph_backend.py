@@ -5,6 +5,7 @@ from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.message import add_messages
 from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage
 
 load_dotenv()
 
@@ -29,6 +30,14 @@ graph.add_edge("chat_node", END)
 
 chatbot = graph.compile(checkpointer=checkpointer)
 
-# 🟢 Testing ke liye CONFIG yahan define karna zaroori hai
 CONFIG = {'configurable': {'thread_id': 'thread-1'}}
+
+response=chatbot.invoke(
+                {'messages': [HumanMessage(content= 'Hi my name is saif')]},
+                    config=CONFIG
+            )
+
+print(chatbot.get_state(config=CONFIG).values['messages'])
+
+
 
